@@ -1,0 +1,18 @@
+---
+#credit for this up to the second play: https://stackoverflow.com/questions/33119092/how-to-prompt-user-for-a-target-host-in-ansible
+- hosts: localhost
+  gather_facts: no
+  vars_prompt:
+  - name: target_host
+    prompt: "Target host"
+    private: no
+  tasks:
+  - add_host:
+      name: "{{ target_host }}"
+      groups: dynamically_created_hosts
+
+- name: gather and display facts
+  hosts: dynamically_created_hosts
+  tasks:
+  - debug:
+      var: ansible_facts

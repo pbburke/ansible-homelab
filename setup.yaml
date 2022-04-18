@@ -1,0 +1,27 @@
+---
+#credit for this up to the second play: https://stackoverflow.com/questions/33119092/how-to-prompt-user-for-a-target-host-in-ansible
+- hosts: localhost
+  gather_facts: no
+  vars_prompt:
+  - name: target_host
+    prompt: "Target host"
+    private: no
+  tasks:
+  - add_host:
+      name: "{{ target_host }}"
+      groups: dynamically_created_hosts
+
+- name: set up ansible user
+  vars_prompt: 
+  - name: ansible_pw
+    prompt: "Ansible user password"
+  hosts: dynamically_created_hosts
+  tasks:
+  - name: create account
+    user:
+      name: ansible
+      #will create a new salt each time, and thus "change" every time it runs
+      #randomizing salt is probably more secure
+      password: "{{ ansible_pw |  password_hash('sha512') }}"
+      groups: wheel
+      #todo: conditional for different distros
