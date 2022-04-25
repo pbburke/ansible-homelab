@@ -25,4 +25,11 @@
       password: "{{ ansible_pw |  password_hash('sha512') }}"
       groups: wheel
       #todo: conditional for different distros
-      #but also todo: more setup, especially keys and passwordless sudo for ansible user
+  - name: copy ansible key
+    authorized_key:
+      user: ansible
+      key: keys/ansible.pub
+  - name: modify /etc/sudoers
+    lineinfile:
+      path: /etc/sudoers
+      line: 'ansible ALL=(ALL) NOPASSWD: ALL'
