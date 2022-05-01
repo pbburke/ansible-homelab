@@ -17,7 +17,7 @@
     prompt: "Ansible user password"
   hosts: dynamically_created_hosts
   tasks:
-  - name: create account
+  - name: create account - RHEL family
     user:
       name: ansible
       #will create a new salt each time, and thus "change" every time it runs
@@ -25,10 +25,21 @@
       password: "{{ ansible_pw |  password_hash('sha512') }}"
       groups: wheel
       #todo: conditional for different distros
+    when: ansible_distribution_file_variety == "RedHat"
+  - name: create account - Debian family
+    user:
+      name: ansible
+      #will create a new salt each time, and thus "change" every time it runs
+      #randomizing salt is probably more secure
+      password: "{{ ansible_pw |  password_hash('sha512') }}"
+      groups: sudo
+      #todo: conditional for different distros
+    when: ansible_distribution_file_variety == "Debian"
   - name: copy ansible key
     authorized_key:
       user: ansible
-      key: keys/ansible.pub
+      #key: keys/ansible.pub
+      key: "{{ lookup('file', 'keys/ansible.pub') }}"
   - name: modify /etc/sudoers
     lineinfile:
       path: /etc/sudoers
