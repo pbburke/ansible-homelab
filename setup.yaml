@@ -1,4 +1,8 @@
 ---
+#usage can be kind of clunky on Ubuntu, like 
+#
+#ansible-playbook -k --user USERNAME setup.yaml --ask-become-pass
+#
 #credit for this up to the second play: https://stackoverflow.com/questions/33119092/how-to-prompt-user-for-a-target-host-in-ansible
 - hosts: localhost
   gather_facts: no
