@@ -1,0 +1,10 @@
+---
+- name: ensure security patches and bugfixes are installed
+  hosts: all
+  tasks:
+  - name: run on dnf based hosts
+    dnf:
+      name: "*"
+      state: latest
+      security: yes
+      bugfix: yes
