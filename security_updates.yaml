@@ -1,11 +1,12 @@
 ---
 - name: ensure security patches and bugfixes are installed
-  hosts: all
+  hosts: all,localhost
   tasks:
   - name: run on dnf based hosts
+    ignore_errors: yes
     dnf:
       name: "*"
       state: latest
       security: yes
       bugfix: yes
-
+    when: ansible_distribution_file_variety == "RedHat" and ansible_distribution_major_version | int >= 8
