@@ -10,3 +10,9 @@
       security: yes
       bugfix: yes
     when: ansible_distribution_file_variety == "RedHat" and ansible_distribution_major_version | int >= 8
+  #- name: run on apt based hosts
+  #
+  #todo
+  #the best ways appear to be to jankily make a sources list that is only security updates and make apt only use those sources or jankily just use unattended-upgrades 
+  #
+  #when: ansible_distribution_file_variety == "Debian" and ansible_distribution_major_version | int >= 8
